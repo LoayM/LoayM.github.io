@@ -1,73 +1,19 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <meta name="generator" content="HTML Tidy for Linux/x86 (vers 11 February 2007), see www.w3.org">
-  <meta name="description" content="Loay Mualem's Homepage">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Loay Mualem's Homepage — Postdoctoral Researcher at IMPRS-IS &amp; University of Stuttgart. Optimization, Machine Learning, Big Data.">
   <title>Loay Mualem</title>
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="images/seal_icon.png">
-  
-  <!-- External JS (if needed) -->
-  <script type="text/javascript" src="js/hidebib.js"></script>
-  <script src="js/scramble.js"></script>
-        <style>
-          :root {
-            --theme-text: #1f2937;
-            --theme-title: #0f172a;
-            --theme-link: #0b5ed7;
-            --theme-link-hover: #084298;
-            --theme-panel: rgba(255, 255, 255, 0.84);
-            --theme-shadow: 0 16px 35px rgba(15, 23, 42, 0.16);
-          }
 
-          body {
-            margin: 0;
-            color: var(--theme-text);
-            font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            background-image: linear-gradient(120deg, rgba(232, 244, 255, 0.64), rgba(255, 246, 235, 0.58)), url('images/background.jpg');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-          }
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;450;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 
-          body > table {
-            margin-top: 18px;
-            margin-bottom: 18px;
-            border-radius: 18px;
-            background: var(--theme-panel);
-            box-shadow: var(--theme-shadow);
-            backdrop-filter: blur(3px);
-          }
-
-          a {
-            color: var(--theme-link);
-            text-decoration: none;
-          }
-
-          a:hover {
-            color: var(--theme-link-hover);
-            text-decoration: underline;
-          }
-
-          pageheading,
-          sectionheading,
-          heading {
-            color: var(--theme-title);
-          }
-
-          img,
-          object {
-            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
-          }
-
-          @media (max-width: 1050px) {
-            body > table {
-              width: 96% !important;
-            }
-          }
-        </style>
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-154732200-1"></script>
   <script>
@@ -76,366 +22,850 @@
     gtag('js', new Date());
     gtag('config', 'UA-154732200-1');
   </script>
-  <script>
-    function togglePaperDetails(abstractId) {
-      toggleblock(abstractId);
+
+  <!-- Three.js for the 3D background -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+
+  <style>
+    /* ============================= Theme ============================= */
+    :root {
+      --bg: #f4f6fb;
+      --bg-soft: #eaeef7;
+      --panel: rgba(255, 255, 255, 0.72);
+      --panel-strong: rgba(255, 255, 255, 0.92);
+      --border: rgba(15, 23, 42, 0.10);
+      --text: #1e2537;
+      --text-soft: #52607a;
+      --title: #0d1326;
+      --accent: #4f6df5;
+      --accent-2: #00b3c6;
+      --accent-soft: rgba(79, 109, 245, 0.12);
+      --shadow: 0 20px 50px rgba(30, 41, 80, 0.12);
+      --shadow-soft: 0 8px 24px rgba(30, 41, 80, 0.08);
+      --glow: rgba(79, 109, 245, 0.35);
+      --pre-bg: rgba(15, 23, 42, 0.05);
     }
-  </script>
+    html[data-theme="dark"] {
+      --bg: #0a0e1c;
+      --bg-soft: #0e1428;
+      --panel: rgba(20, 27, 50, 0.62);
+      --panel-strong: rgba(22, 30, 56, 0.88);
+      --border: rgba(148, 163, 216, 0.16);
+      --text: #ccd4ea;
+      --text-soft: #8e9ac0;
+      --title: #f1f4ff;
+      --accent: #7c94ff;
+      --accent-2: #34d8e8;
+      --accent-soft: rgba(124, 148, 255, 0.14);
+      --shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+      --shadow-soft: 0 10px 28px rgba(0, 0, 0, 0.35);
+      --glow: rgba(124, 148, 255, 0.45);
+      --pre-bg: rgba(0, 0, 0, 0.32);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "Inter", "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.65;
+      color: var(--text);
+      background: var(--bg);
+      transition: background 0.5s ease, color 0.5s ease;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, .brand { font-family: "Space Grotesk", "Inter", sans-serif; color: var(--title); }
+
+    a { color: var(--accent); text-decoration: none; transition: color 0.2s ease; }
+    a:hover { color: var(--accent-2); }
+
+    ::selection { background: var(--accent); color: #fff; }
+
+    /* ============================= 3D canvas ============================= */
+    #bg3d {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      display: block;
+      pointer-events: none;
+    }
+    .bg-vignette {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: radial-gradient(ellipse at 50% 0%, transparent 40%, var(--bg) 130%);
+      opacity: 0.85;
+      transition: background 0.5s ease;
+    }
+
+    .content { position: relative; z-index: 2; }
+
+    /* ============================= Nav ============================= */
+    nav {
+      position: fixed;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--panel-strong);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      white-space: nowrap;
+      max-width: calc(100vw - 20px);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    nav::-webkit-scrollbar { display: none; }
+    nav .brand {
+      font-weight: 700;
+      font-size: 15px;
+      padding: 6px 14px 6px 8px;
+      background: linear-gradient(120deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    nav a.navlink {
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--text-soft);
+      padding: 7px 13px;
+      border-radius: 999px;
+      transition: all 0.25s ease;
+    }
+    nav a.navlink:hover { color: var(--title); background: var(--accent-soft); }
+    #themeToggle {
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      font-size: 15px;
+      display: grid;
+      place-items: center;
+      margin-left: 6px;
+      transition: transform 0.4s cubic-bezier(.34,1.56,.64,1), background 0.25s;
+      flex: 0 0 auto;
+    }
+    #themeToggle:hover { transform: rotate(40deg) scale(1.08); background: var(--accent-soft); }
+
+    /* ============================= Layout ============================= */
+    .wrap { max-width: 1060px; margin: 0 auto; padding: 0 22px; }
+
+    section { padding: 40px 0; }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin: 0 0 28px;
+    }
+    .section-title .num {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: 8px;
+    }
+    .section-title::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border), transparent);
+    }
+
+    /* ============================= Hero ============================= */
+    .hero {
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+      padding-top: 90px;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 54px;
+      align-items: center;
+      width: 100%;
+    }
+    .portrait-scene { perspective: 900px; }
+    .portrait {
+      position: relative;
+      border-radius: 24px;
+      transform-style: preserve-3d;
+      transition: transform 0.18s ease-out;
+      will-change: transform;
+    }
+    .portrait img {
+      width: 100%;
+      display: block;
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .portrait::before {
+      content: "";
+      position: absolute;
+      inset: -14px;
+      border-radius: 30px;
+      background: conic-gradient(from 180deg, var(--accent), var(--accent-2), transparent 40%, var(--accent));
+      filter: blur(26px);
+      opacity: 0.35;
+      z-index: -1;
+      transform: translateZ(-60px);
+    }
+    .portrait .badge {
+      position: absolute;
+      bottom: -14px;
+      right: -14px;
+      transform: translateZ(50px);
+      background: var(--panel-strong);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      border-radius: 14px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--title);
+      box-shadow: var(--shadow-soft);
+    }
+    .badge .dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      margin-right: 7px;
+      border-radius: 50%;
+      background: #2dd4a7;
+      box-shadow: 0 0 10px #2dd4a7;
+      animation: pulse 2.2s infinite;
+    }
+    @keyframes pulse { 50% { opacity: 0.4; } }
+
+    .hero h1 {
+      font-size: clamp(42px, 6.5vw, 68px);
+      line-height: 1.03;
+      letter-spacing: -2px;
+      margin: 0 0 14px;
+    }
+    .hero h1 .grad {
+      background: linear-gradient(110deg, var(--accent) 10%, var(--accent-2) 90%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero .role {
+      font-size: 18px;
+      color: var(--text-soft);
+      margin: 0 0 6px;
+      font-weight: 500;
+    }
+    .hero .email {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13.5px;
+      color: var(--text-soft);
+      background: var(--accent-soft);
+      border: 1px dashed var(--border);
+      padding: 5px 12px;
+      border-radius: 8px;
+      display: inline-block;
+      margin: 10px 0 22px;
+    }
+    .hero .bio { max-width: 640px; color: var(--text); }
+    .hero .bio p { margin: 0 0 14px; }
+
+    .cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 26px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 22px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 14.5px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--title);
+      backdrop-filter: blur(10px);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s;
+      box-shadow: var(--shadow-soft);
+    }
+    .btn:hover { transform: translateY(-3px); box-shadow: 0 14px 34px var(--glow); color: var(--title); }
+    .btn.primary {
+      background: linear-gradient(120deg, var(--accent), var(--accent-2));
+      color: #fff;
+      border: none;
+    }
+    .btn.primary:hover { color: #fff; }
+
+    .scroll-hint {
+      position: absolute;
+      left: 50%;
+      bottom: 26px;
+      transform: translateX(-50%);
+      color: var(--text-soft);
+      font-size: 22px;
+      animation: bob 2s infinite ease-in-out;
+      z-index: 2;
+    }
+    @keyframes bob { 50% { transform: translate(-50%, 8px); } }
+
+    /* ============================= Cards ============================= */
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    /* Experience */
+    .exp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 22px;
+    }
+    .exp-card {
+      padding: 28px 24px;
+      text-align: center;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+    .exp-card:hover { border-color: var(--accent); box-shadow: 0 18px 44px var(--glow); }
+    .exp-card .logos {
+      height: 96px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      transform: translateZ(35px);
+    }
+    .exp-card .logos img {
+      max-height: 44px;
+      max-width: 82%;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.15));
+    }
+    html[data-theme="dark"] .exp-card .logos img {
+      background: rgba(255,255,255,0.92);
+      border-radius: 10px;
+      padding: 5px 10px;
+    }
+    .exp-card h3 { margin: 0 0 6px; font-size: 17px; transform: translateZ(25px); }
+    .exp-card .role-line { color: var(--accent); font-weight: 600; font-size: 14px; margin: 0 0 4px; }
+    .exp-card .dates { color: var(--text-soft); font-size: 13px; margin: 0; }
+
+    /* Teaching */
+    .timeline { position: relative; margin: 0; padding: 6px 0 6px 26px; list-style: none; }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 6px; top: 8px; bottom: 8px;
+      width: 2px;
+      background: linear-gradient(var(--accent), var(--accent-2));
+      border-radius: 2px;
+      opacity: 0.5;
+    }
+    .timeline li { position: relative; padding: 9px 0 9px 12px; }
+    .timeline li::before {
+      content: "";
+      position: absolute;
+      left: -25.5px; top: 19px;
+      width: 11px; height: 11px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2.5px solid var(--accent);
+      box-shadow: 0 0 12px var(--glow);
+    }
+    .timeline .years {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12.5px;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 2px 9px;
+      border-radius: 6px;
+      margin-right: 10px;
+      white-space: nowrap;
+    }
+
+    /* Publications */
+    .sub-label {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      margin: 44px 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .sub-label::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+    .sub-label:first-of-type { margin-top: 0; }
+
+    .pub {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 26px;
+      padding: 24px;
+      margin-bottom: 22px;
+      align-items: start;
+    }
+    .pub:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 20px 48px var(--glow); }
+
+    .pub-thumb-scene { perspective: 700px; }
+    .pub-thumb {
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--bg-soft);
+      transform-style: preserve-3d;
+      transition: transform 0.18s ease-out;
+      will-change: transform;
+      box-shadow: var(--shadow-soft);
+    }
+    .pub-thumb img, .pub-thumb object { width: 100%; display: block; }
+    .pub-thumb object { height: 230px; }
+    .pub-thumb .placeholder {
+      height: 150px;
+      display: grid;
+      place-items: center;
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 600;
+      font-size: 18px;
+      color: var(--text-soft);
+      background:
+        radial-gradient(circle at 25% 25%, var(--accent-soft), transparent 60%),
+        radial-gradient(circle at 80% 75%, rgba(0,179,198,0.12), transparent 55%);
+    }
+
+    .pub h3 { margin: 0 0 8px; font-size: 18.5px; line-height: 1.4; letter-spacing: -0.2px; }
+    .pub .authors { margin: 0 0 8px; font-size: 14.5px; color: var(--text-soft); }
+    .pub .authors .me { color: var(--title); font-weight: 600; border-bottom: 2px solid var(--accent); }
+    .pub .venue {
+      display: inline-block;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 3px 12px;
+      margin-bottom: 12px;
+    }
+
+    .pub-links { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
+    .chip {
+      font-size: 13px;
+      font-weight: 500;
+      font-family: "Inter", sans-serif;
+      color: var(--text);
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 5px 13px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .chip:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .chip[aria-expanded="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+    .fold {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.4s ease;
+    }
+    .fold > div { overflow: hidden; }
+    .fold.open { grid-template-rows: 1fr; }
+    .fold .abs {
+      font-size: 14px;
+      color: var(--text-soft);
+      text-align: justify;
+      border-left: 3px solid var(--accent);
+      padding: 2px 0 2px 14px;
+      margin: 12px 0 4px;
+    }
+    .fold pre {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      line-height: 1.55;
+      background: var(--pre-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin: 12px 0 4px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: var(--text);
+    }
+
+    /* ============================= Footer ============================= */
+    footer {
+      padding: 46px 0 34px;
+      text-align: center;
+      color: var(--text-soft);
+      font-size: 13.5px;
+    }
+    footer .line {
+      width: 90px; height: 3px;
+      margin: 0 auto 20px;
+      border-radius: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    }
+
+    /* ============================= Reveal on scroll ============================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s cubic-bezier(.22,.85,.35,1);
+    }
+    .reveal.in { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      html { scroll-behavior: auto; }
+      .scroll-hint { animation: none; }
+    }
+
+    /* ============================= Responsive ============================= */
+    @media (max-width: 860px) {
+      .hero { padding-top: 110px; min-height: unset; }
+      .hero-grid { grid-template-columns: 1fr; gap: 36px; }
+      .portrait-scene { max-width: 300px; margin: 0 auto; }
+      .hero h1, .hero .role { text-align: center; }
+      .hero .email { display: block; text-align: center; }
+      .cta { justify-content: center; }
+      .pub { grid-template-columns: 1fr; }
+      .pub-thumb-scene { max-width: 330px; margin: 0 auto; }
+      .section-title { font-size: 25px; }
+      nav .brand { display: none; }
+    }
+  </style>
 </head>
 
-
-<!-- =================== Bio =================== -->
 <body>
-<table width="1000" border="0" align="center" border="0" cellspacing="0" cellpadding="20">
-<tr><td>
+  <canvas id="bg3d"></canvas>
+  <div class="bg-vignette"></div>
 
-<table width="100%" align="center" border="0" cellspacing="0" cellpadding="20">
-  <p align="center">
-    <pageheading style="font-size: 36px;">Loay Mualem</pageheading><br>
-    <font id="email" style="display:inline;">loaymua_at_gmail_dot_com</font>
-  </p>
+  <nav>
+    <span class="brand">LM</span>
+    <a class="navlink" href="#about">About</a>
+    <a class="navlink" href="#experience">Experience</a>
+    <a class="navlink" href="#teaching">Teaching</a>
+    <a class="navlink" href="#research">Research</a>
+    <button id="themeToggle" title="Toggle theme" aria-label="Toggle color theme">◐</button>
+  </nav>
 
-  <tr>
-    <td width="32%" valign="top"><a href="images/loay.jpg"><img src="images/loay.jpg" width="100%" style="border-radius:15px"></a>
-    <p align=center>
-      <a href="files/Loay_CV%20(1).pdf">CV</a> |
-    <a href="https://scholar.google.com/citations?user=kMWFvg4AAAAJ&hl=iw&oi=ao">Google Scholar</a> | 
-    <a href="https://il.linkedin.com/in/loay-mualem">LinkedIn</a>|<br/> 
-    </p>
-    </td>
-    <td width="68%" valign="top" align="justify">
-    <p></p>
-    <div style="font-size:12.5pt;" align="justify">
-      <p>
-        I am currently a postdoctoral researcher at IMPRS-IS and the University of Stuttgart, working with Prof. Mathias Niepert at the Machine Learning and Simulation Lab (MLS Lab). I completed my Ph.D. in Computer Science at the University of Haifa, under the supervision of Prof. Moran Feldman and Prof. Dan Feldman.
+  <div class="content">
 
-      </p>
-          My main research interests are Optimization, Machine/Deep Learning, Big Data, and Econeurobiology. I am passionate about employing provable optimization techniques to enhance the quality and accelerate the training of real-world Machine/Deep Learning models.
-        My main research interests are Optimization, Machine/Deep Learning, and Big Data. I am passionate about employing provable optimization techniques to enhance the quality and accelerate the training of real-world Machine/Deep Learning models.
+    <!-- =================== Hero / Bio =================== -->
+    <header class="hero" id="about">
+      <div class="wrap hero-grid">
+        <div class="portrait-scene">
+          <div class="portrait" id="portrait">
+            <a href="images/loay.jpg"><img src="images/loay.jpg" alt="Loay Mualem"></a>
+            <div class="badge"><span class="dot"></span>Postdoc @ Stuttgart</div>
+          </div>
+        </div>
 
-      </p>
-    </div>
-    </td>
-  </tr>
-</table>
+        <div>
+          <h1>Hi, I'm <span class="grad">Loay Mualem</span></h1>
+          <p class="role">Postdoctoral Researcher · IMPRS-IS &amp; University of Stuttgart</p>
+          <span class="email">loaymua [at] gmail [dot] com</span>
 
+          <div class="bio">
+            <p>
+              I am currently a postdoctoral researcher at IMPRS-IS and the University of Stuttgart, working with
+              Prof. Mathias Niepert at the Machine Learning and Simulation Lab (MLS Lab). I completed my Ph.D. in
+              Computer Science at the University of Haifa, under the supervision of Prof. Moran Feldman and
+              Prof. Dan Feldman.
+            </p>
+            <p>
+              My main research interests are Optimization, Machine/Deep Learning, and Big Data. I am passionate
+              about employing provable optimization techniques to enhance the quality and accelerate the training
+              of real-world Machine/Deep Learning models.
+            </p>
+          </div>
 
-<!-- =================== Experience =================== -->
-<sectionheading style="font-size: 24px;">&nbsp;&nbsp;Experience</sectionheading>
-<ul>
-<table width="100%" align="center" style="margin-left:10px" cellspacing="0" cellpadding="0" border="0">
-  <tr>
-    <th width="16%" valign="top" align="center">
-      <img src="images/logo2.png" alt="IMPRS-IS" width="100%" style="display:block; margin:0 auto 8px auto;">
-      <img src="images/logo1.png" alt="University of Stuttgart" width="100%" style="display:block; margin:0 auto 6px auto;">
-      <p style="line-height:1.3; font-size:12pt">IMPRS-IS + University of Stuttgart<br>Postdoctoral Researcher<br>October 25 - Present</p>
-    </th>
-
-    <th width="16%" valign="top" align="center">
-      <img src="images/dh2.png" alt="sym" width="50%"></a>
-      <p style="line-height:1.3; font-size:12pt">DataHeroes<br>Lead DL + LLM Researcher<br>April 23 - August 25</p>
-    </th>
-    <th width="16%" valign="top" align="center">
-      <img src="images/hu.png" alt="sym" width="55%"></a>
-      <p style="line-height:1.3; font-size:12pt">Haifa University<br>M.Sc. + Ph.D. in CS<br>&nbsp; Mar 18 - Mar 21, &nbsp;&nbsp;&nbsp; Oct 21 - August 25</p>
-    </th>
-  </tr>
-</table>
-</ul>
-
-
-
-<!-- =================== Teaching =================== -->
-<table width="100%" align="center" border="0" cellspacing="0" cellpadding="0">
-  <tr><td><sectionheading style="font-size: 24px;">&nbsp;&nbsp;Teaching @ University of Haifa</sectionheading></td></tr>
-</table>
-<table width="100%" align="top" border="0" cellpadding="0">
-  <tr>
-    <span style="line-height:0.7">
-      <p style="text-align:left; padding-left:11px">
-        2022-2024: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Lecturer, Introduction to Computer Science
-      </p>
-      <p style="text-align:left; padding-left:11px">
-         2022-2024:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; B.Sc. final projects supervisor and mentor
-      </p>
-      <p style="text-align:left; padding-left:11px">
-        2021-2023:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Lecturer, Introduction to Mathematics for first-year students
-      </p>
-      <p style="text-align:left; padding-left:11px">
-        2017-2021:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Head TA, Introduction to Algorithms
-      </p>
-      <p style="text-align:left; padding-left:11px">
-        2016-2017,2021-2022:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Head TA, Data Stuctures
-      </p>
-      <p style="text-align:left; padding-left:11px">
-        2018-2021:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Head TA, Introduction to Compilers
-      </p>
-    </span>
-  </tr>
-</table>
-
-
-
-<!-- =================== Preprints =================== -->
-<table width="100%" align="center" border="0" cellspacing="0" cellpadding="10">
-  <tr><td><sectionheading style="font-size: 24px;">Preprints</sectionheading></td></tr>
-</table>
-<table width="100%" align="center" border="0" cellspacing="0" cellpadding="15">
-  <tr>
-    <td width="33%" valign="top" align="center">
-      <div style="width:100%; min-height:120px; border-radius:15px; border:1px solid #c8c8c8; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.65); font-size:16px;">
-        Preprint
+          <div class="cta">
+            <a class="btn primary" href="files/Loay_CV%20(1).pdf">📄 Curriculum Vitae</a>
+            <a class="btn" href="https://scholar.google.com/citations?user=kMWFvg4AAAAJ&amp;hl=iw&amp;oi=ao">🎓 Google Scholar</a>
+            <a class="btn" href="https://il.linkedin.com/in/loay-mualem">💼 LinkedIn</a>
+          </div>
+        </div>
       </div>
-    </td>
-    <td width="67%" valign="top">
-      <p><a href="#">
-          <heading>Improving Model Classification by Optimizing the Training Dataset</heading>
-        </a><br>
-      </p>
+      <div class="scroll-hint">▾</div>
+    </header>
 
-      <div class="paper" id="improving_dataset">
-        <a href="https://arxiv.org/pdf/2507.16729">paper</a> |
-        <a href="javascript:togglePaperDetails('improving_dataset_abs')">abstract</a> |
-        <p align="justify"><i id="improving_dataset_abs">In the era of data-centric AI, the ability to curate high-quality training data is as crucial as model design. Coresets offer a principled approach to data reduction, enabling efficient learning on large datasets through importance sampling. However, conventional sensitivity-based coreset construction often falls short in optimizing for classification performance metrics, e.g., F 1 score, focusing instead on loss approximation. In this work, we present a systematic framework for tuning the coreset generation process to enhance downstream classification quality. Our method introduces new tunable parameters including deterministic sampling, class-wise allocation, and refinement via active sampling, beyond traditional sensitivity scores. Through extensive experiments on diverse datasets and classifiers, we demonstrate that tuned coresets can significantly outperform both vanilla coresets and full dataset training on key classification metrics, offering an effective path towards better and more efficient model training.
-        </i></p>
+    <!-- =================== Experience =================== -->
+    <section id="experience">
+      <div class="wrap">
+        <h2 class="section-title reveal"><span class="num">01</span>Experience</h2>
+        <div class="exp-grid">
+          <div class="card exp-card tilt reveal">
+            <div class="logos">
+              <img src="images/logo2.png" alt="IMPRS-IS">
+              <img src="images/logo1.png" alt="University of Stuttgart">
+            </div>
+            <h3>IMPRS-IS + University of Stuttgart</h3>
+            <p class="role-line">Postdoctoral Researcher</p>
+            <p class="dates">October 2025 — Present</p>
+          </div>
+
+          <div class="card exp-card tilt reveal">
+            <div class="logos"><img src="images/dh2.png" alt="DataHeroes"></div>
+            <h3>DataHeroes</h3>
+            <p class="role-line">Lead DL + LLM Researcher</p>
+            <p class="dates">April 2023 — August 2025</p>
+          </div>
+
+          <div class="card exp-card tilt reveal">
+            <div class="logos"><img src="images/hu.png" alt="University of Haifa"></div>
+            <h3>University of Haifa</h3>
+            <p class="role-line">M.Sc. + Ph.D. in Computer Science</p>
+            <p class="dates">Mar 2018 — Mar 2021 · Oct 2021 — Aug 2025</p>
+          </div>
+        </div>
       </div>
-    </td>
-  </tr>
-</table>
+    </section>
 
-<table width="100%" align="center" border="0" cellspacing="0" cellpadding="10">
+    <!-- =================== Teaching =================== -->
+    <section id="teaching">
+      <div class="wrap">
+        <h2 class="section-title reveal"><span class="num">02</span>Teaching <span style="font-size:15px; font-weight:500; color:var(--text-soft);">@ University of Haifa</span></h2>
+        <ul class="timeline">
+          <li class="reveal"><span class="years">2022–2024</span> Lecturer, Introduction to Computer Science</li>
+          <li class="reveal"><span class="years">2022–2024</span> B.Sc. final projects supervisor and mentor</li>
+          <li class="reveal"><span class="years">2021–2023</span> Lecturer, Introduction to Mathematics for first-year students</li>
+          <li class="reveal"><span class="years">2017–2021</span> Head TA, Introduction to Algorithms</li>
+          <li class="reveal"><span class="years">2016–2017, 2021–2022</span> Head TA, Data Structures</li>
+          <li class="reveal"><span class="years">2018–2021</span> Head TA, Introduction to Compilers</li>
+        </ul>
+      </div>
+    </section>
 
-  <tr><td><sectionheading >Submitted papers</sectionheading></td></tr>
-  </table>
-  <table width="100%" align="center" border="0" cellspacing="0" cellpadding="15">
-  
-<tr>
-  <td width="33%" valign="top" align="center">
-    <div id="aria_img">
-      <object data="images/ARIA2.pdf" type="application/pdf" width="100%" height="260" style="border-radius:15px;">
-        <p>PDF preview unavailable. <a href="images/ARIA2.pdf">Open ARIA figure</a>.</p>
-      </object>
-    </div>
-  </td>
-  <td width="67%" valign="top">
-    <p><a href="#">
-        <heading>ARIA: Adaptive Region-Based Importance Allocation for Conditional Diffusion Distillation</heading>
-      </a><br>
-    </p>
+    <!-- =================== Research =================== -->
+    <section id="research">
+      <div class="wrap">
+        <h2 class="section-title reveal"><span class="num">03</span>Research</h2>
 
-    <div class="paper" id="aria">
-      <a href="javascript:togglePaperDetails('aria_abs')">abstract</a> |
-      <p align="justify"><i id="aria_abs">Conditional diffusion distillation seeks to transfer a large teacher model to a smaller student while preserving alignment with conditioning inputs, but generalization is often difficult when the conditioning space is broad and training data is limited. In practice, only a restricted synthetic dataset is typically available while possible conditions (such as text prompts) are much larger, which makes uniform training inefficient. ARIA studies this challenge under realistic training budgets and evaluates performance across multiple student architectures. Experiments show consistent FID improvements, including up to $10\%$ relative gains in unseen regimes and up to $40\%$ faster convergence.
-      </i></p>
-    </div>
-  </td>
-</tr>
+        <!-- ---------- Preprints ---------- -->
+        <div class="sub-label reveal">Preprints</div>
 
-<tr>
-  <td width="33%" valign="top" align="center">
-    <div id="spuraudio_img">
-      <img src="images/illustration_iid_vs_ood.png" alt="sym" width="100%" height="100%"
-      style="border-radius:15px; opacity:1.0; filter:alpha(opacity=80);">
-    </div>
-  </td>
-  <td width="67%" valign="top">
-    <p><a href="#">
-        <heading>SpurAudio: A Benchmark for Studying Shortcut Learning in Few-Shot Audio Classification</heading>
-      </a><br>
-    </p>
+        <article class="card pub reveal">
+          <div class="pub-thumb-scene">
+            <div class="pub-thumb tilt">
+              <div class="placeholder">Preprint</div>
+            </div>
+          </div>
+          <div class="pub-body">
+            <h3>Improving Model Classification by Optimizing the Training Dataset</h3>
+            <div class="pub-links">
+              <a class="chip" href="https://arxiv.org/pdf/2507.16729">paper ↗</a>
+              <button class="chip" data-toggle="improving_abs" aria-expanded="false">abstract</button>
+            </div>
+            <div class="fold" id="improving_abs"><div><p class="abs">In the era of data-centric AI, the ability to curate high-quality training data is as crucial as model design. Coresets offer a principled approach to data reduction, enabling efficient learning on large datasets through importance sampling. However, conventional sensitivity-based coreset construction often falls short in optimizing for classification performance metrics, e.g., F 1 score, focusing instead on loss approximation. In this work, we present a systematic framework for tuning the coreset generation process to enhance downstream classification quality. Our method introduces new tunable parameters including deterministic sampling, class-wise allocation, and refinement via active sampling, beyond traditional sensitivity scores. Through extensive experiments on diverse datasets and classifiers, we demonstrate that tuned coresets can significantly outperform both vanilla coresets and full dataset training on key classification metrics, offering an effective path towards better and more efficient model training.</p></div></div>
+          </div>
+        </article>
 
-    <div class="paper" id="spuraudio">
-      <a href="javascript:togglePaperDetails('spuraudio_abs')">abstract</a> |
-      <p align="justify"><i id="spuraudio_abs">Few-shot classification (FSC) is widely used for learning from limited labeled data, yet most evaluations implicitly assume that target concepts are independent of contextual cues. In real-world settings, however, examples often appear within rich contexts, allowing models to exploit spurious correlations between foreground content and background signals. While such effects have been studied in few-shot image classification, their role in few-shot audio classification remains largely unexplored, and existing audio benchmarks offer limited control over contextual structure. We introduce <b>SpurAudio</b>, a benchmark that leverages the natural separability of foreground events and background environments in audio to enable controlled, multi-level evaluation of contextual shifts across support and query sets. Using this benchmark, we show that many state-of-the-art few-shot methods suffer severe performance degradation when background correlations are disrupted, despite achieving similar accuracy under standard evaluation protocols. Moreover, methods that appear comparable under conventional benchmarks can exhibit markedly different sensitivity to spurious correlations, as few-shot performance is shaped by how well feature representations align with classifier heads, revealing systematic algorithmic strengths and vulnerabilities. These findings provide new insight into the behavior of few-shot methods in audio and highlight the need for benchmarks that explicitly probe context dependence when evaluating FSC models.
-      </i></p>
-    </div>
-  </td>
-</tr>
+        <!-- ---------- Submitted ---------- -->
+        <div class="sub-label reveal">Submitted Papers</div>
 
-<tr>
-  <td width="33%" valign="top" align="center">
-    <div id="orb_img">
-      <img src="images/orbslam.png" alt="sym" width="100%" height="100%"
-      style="border-radius:15px; opacity:1.0; filter:alpha(opacity=80);">
-    </div>
-  </td>
-  <td width="67%" valign="top">
-    <p><a href="#">
-        <heading>ORBSLAM3-Enhanced Autonomous Toy Drones: Pioneering Indoor Exploration</heading>
-      </a><br>
-      
-       Murad Tukan, Fares Fares, Yotam Grufinkle, Ido Talmor, <b><u>Loay Mualem</b></u>, Vladimir Braverman, Dan Feldman
-      <br>
-    </p>
+        <article class="card pub reveal">
+          <div class="pub-thumb-scene">
+            <div class="pub-thumb tilt">
+              <object data="images/method.pdf" type="application/pdf">
+                <div class="placeholder">AXON</div>
+              </object>
+            </div>
+          </div>
+          <div class="pub-body">
+            <h3>Supportive Token Revealing for Fast Diffusion Language Model Decoding</h3>
+            <p class="authors">Giries Abu Ayoub, Mario Barbara, Lluís Pastor-Pérez, Tanja Bien, Aneesh Barthakur, Alaa Maalouf, <span class="me">Loay Mualem</span></p>
+            <div class="pub-links">
+              <a class="chip" href="https://arxiv.org/abs/2606.04236">paper ↗</a>
+              <a class="chip" href="https://github.com/Jerryaa98/AXON.git">code ↗</a>
+              <button class="chip" data-toggle="axon_abs" aria-expanded="false">abstract</button>
+            </div>
+            <div class="fold" id="axon_abs"><div><p class="abs">Discrete diffusion language models can generate text efficiently by updating multiple masked positions in parallel, but this parallelism introduces a quality-latency trade-off. Aggressive decoding may commit mutually dependent tokens too early, while conservative decoding requires many denoising steps. Existing methods address this tension by deciding which tokens are safe to reveal using confidence or dependency criteria. However, avoiding unsafe commits does not necessarily make the remaining masked sequence easy to decode, since uncertain tokens may depend on masked tokens, creating a bottleneck for denoising steps. We propose AXON, a training-free module that can be added on top of existing parallel decoding strategies for diffusion language models. Rather than replacing the base decoder, AXON monitors the remaining uncertain masked tokens and intervenes only when their current state suggests that additional context is needed. It then shifts the criterion from which tokens are safest to reveal to which confident reveals would best support later denoising. AXON selects anchors, confident masked tokens that uncertain positions attend to, using attention, uncertainty, and confidence signals. Experiments on reasoning and code-generation benchmarks across multiple diffusion language models show that AXON improves the quality-latency trade-off of existing parallel decoders, often reducing the number of function evaluations while maintaining or improving accuracy.</p></div></div>
+          </div>
+        </article>
 
-    <div class="paper" id="orb">
-     <a href="https://arxiv.org/abs/2312.13385">paper</a> |
-      <a href="javascript:togglePaperDetails('orb_abs')">abstract</a> |
-      <a shape="rect" href="javascript:togglebib('orb')" class="togglebib">bibtex</a> |
-      <p align="justify"><i id="orb_abs">Navigating toy drones through uncharted GPS-denied indoor spaces poses significant difficulties due to their reliance on GPS for location determination. In such circumstances, the necessity for achieving proper navigation is a primary concern. In response to this formidable challenge, we introduce a real-time autonomous indoor exploration system tailored for drones equipped with a monocular RGB camera.Our system utilizes ORB-SLAM3, a state-of-the-art vision feature-based SLAM, to handle both the localization of toy drones and the mapping of unmapped indoor terrains. Aside from the practicability of ORB-SLAM3, the generated maps are represented as sparse point clouds, making them prone to the presence of outlier data. To address this challenge, we propose an outlier removal algorithm with provable guarantees. Furthermore, our system incorporates a novel exit detection algorithm, ensuring continuous exploration by the toy drone throughout the unfamiliar indoor environment. We also transform the sparse point to ensure proper path planning using existing path planners. To validate the efficacy and efficiency of our proposed system, we conducted offline and real-time experiments on the autonomous exploration of indoor spaces. The results from these endeavors demonstrate the effectiveness of our methods.
-      </i></p>
-<pre xml:space="preserve">
-  @article{tukan2023orbslam3,
-    title={Orbslam3-enhanced autonomous toy drones: Pioneering indoor exploration},
-    author={Tukan, Murad and Fares, Fares and Grufinkle, Yotam and Talmor, Ido and Mualem, Loay and Braverman, Vladimir and Feldman, Dan},
-    journal={arXiv preprint arXiv:2312.13385},
-    year={2023}
-  }
+        <article class="card pub reveal">
+          <div class="pub-thumb-scene">
+            <div class="pub-thumb tilt">
+              <object data="images/ARIA2.pdf" type="application/pdf">
+                <div class="placeholder">ARIA</div>
+              </object>
+            </div>
+          </div>
+          <div class="pub-body">
+            <h3>ARIA: Adaptive Region-Based Importance Allocation for Conditional Diffusion Distillation</h3>
+            <p class="authors"><span class="me">Loay Mualem</span>, Vinh Tong, Samir Darouich, Mathias Niepert</p>
+            <div class="pub-links">
+              <a class="chip" href="https://arxiv.org/abs/2606.23898">paper ↗</a>
+              <button class="chip" data-toggle="aria_abs" aria-expanded="false">abstract</button>
+            </div>
+            <div class="fold" id="aria_abs"><div><p class="abs">Conditional diffusion distillation seeks to transfer a large teacher model to a smaller student while preserving alignment with conditioning inputs, but generalization is often difficult when the conditioning space is broad and training data is limited. In practice, only a restricted synthetic dataset is typically available while possible conditions (such as text prompts) are much larger, which makes uniform training inefficient. ARIA studies this challenge under realistic training budgets and evaluates performance across multiple student architectures. Experiments show consistent FID improvements, including up to 10% relative gains in unseen regimes and up to 40% faster convergence.</p></div></div>
+          </div>
+        </article>
 
-</pre>
-</div>
-</td>
-</tr>
+        <article class="card pub reveal">
+          <div class="pub-thumb-scene">
+            <div class="pub-thumb tilt"><img src="images/illustration_iid_vs_ood.png" alt="SpurAudio illustration"></div>
+          </div>
+          <div class="pub-body">
+            <h3>SpurAudio: A Benchmark for Studying Shortcut Learning in Few-Shot Audio Classification</h3>
+            <p class="authors">Giries Abu Ayoub, Morad Tukan, <span class="me">Loay Mualem</span></p>
+            <div class="pub-links">
+              <a class="chip" href="https://arxiv.org/abs/2605.13672">paper ↗</a>
+              <button class="chip" data-toggle="spuraudio_abs" aria-expanded="false">abstract</button>
+            </div>
+            <div class="fold" id="spuraudio_abs"><div><p class="abs">Few-shot classification (FSC) is widely used for learning from limited labeled data, yet most evaluations implicitly assume that target concepts are independent of contextual cues. In real-world settings, however, examples often appear within rich contexts, allowing models to exploit spurious correlations between foreground content and background signals. While such effects have been studied in few-shot image classification, their role in few-shot audio classification remains largely unexplored, and existing audio benchmarks offer limited control over contextual structure. We introduce <b>SpurAudio</b>, a benchmark that leverages the natural separability of foreground events and background environments in audio to enable controlled, multi-level evaluation of contextual shifts across support and query sets. Using this benchmark, we show that many state-of-the-art few-shot methods suffer severe performance degradation when background correlations are disrupted, despite achieving similar accuracy under standard evaluation protocols. Moreover, methods that appear comparable under conventional benchmarks can exhibit markedly different sensitivity to spurious correlations, as few-shot performance is shaped by how well feature representations align with classifier heads, revealing systematic algorithmic strengths and vulnerabilities. These findings provide new insight into the behavior of few-shot methods in audio and highlight the need for benchmarks that explicitly probe context dependence when evaluating FSC models.</p></div></div>
+          </div>
+        </article>
 
+        <article class="card pub reveal">
+          <div class="pub-thumb-scene">
+            <div class="pub-thumb tilt"><img src="images/orbslam.png" alt="ORB-SLAM3 drones"></div>
+          </div>
+          <div class="pub-body">
+            <h3>ORBSLAM3-Enhanced Autonomous Toy Drones: Pioneering Indoor Exploration</h3>
+            <p class="authors">Murad Tukan, Fares Fares, Yotam Grufinkle, Ido Talmor, <span class="me">Loay Mualem</span>, Vladimir Braverman, Dan Feldman</p>
+            <div class="pub-links">
+              <a class="chip" href="https://arxiv.org/abs/2312.13385">paper ↗</a>
+              <button class="chip" data-toggle="orb_abs" aria-expanded="false">abstract</button>
+              <button class="chip" data-toggle="orb_bib" aria-expanded="false">bibtex</button>
+            </div>
+            <div class="fold" id="orb_abs"><div><p class="abs">Navigating toy drones through uncharted GPS-denied indoor spaces poses significant difficulties due to their reliance on GPS for location determination. In such circumstances, the necessity for achieving proper navigation is a primary concern. In response to this formidable challenge, we introduce a real-time autonomous indoor exploration system tailored for drones equipped with a monocular RGB camera. Our system utilizes ORB-SLAM3, a state-of-the-art vision feature-based SLAM, to handle both the localization of toy drones and the mapping of unmapped indoor terrains. Aside from the practicability of ORB-SLAM3, the generated maps are represented as sparse point clouds, making them prone to the presence of outlier data. To address this challenge, we propose an outlier removal algorithm with provable guarantees. Furthermore, our system incorporates a novel exit detection algorithm, ensuring continuous exploration by the toy drone throughout the unfamiliar indoor environment. We also transform the sparse point to ensure proper path planning using existing path planners. To validate the efficacy and efficiency of our proposed system, we conducted offline and real-time experiments on the autonomous exploration of indoor spaces. The results from these endeavors demonstrate the effectiveness of our methods.</p></div></div>
+            <div class="fold" id="orb_bib"><div><pre>@article{tukan2023orbslam3,
+  title={Orbslam3-enhanced autonomous toy drones: Pioneering indoor exploration},
+  author={Tukan, Murad and Fares, Fares and Grufinkle, Yotam and Talmor, Ido and Mualem, Loay and Braverman, Vladimir and Feldman, Dan},
+  journal={arXiv preprint arXiv:2312.13385},
+  year={2023}
+}</pre></div></div>
+          </div>
+        </article>
 
-<!-- ====================================================================  -->
+        <!-- ---------- Publications ---------- -->
+        <div class="sub-label reveal">Publications</div>
 
-<!-- =================== Publications =================== -->
-<table width="100%" align="center" border="0" cellspacing="0" cellpadding="10">
-
-<tr><td><sectionheading style="font-size: 24px;">Publications</sectionheading></td></tr>
-</table>
-<table width="100%" align="center" border="0" cellspacing="0" cellpadding="15">
-
- <tr>
-  <td width="33%" valign="top" align="center">
-    <div id="practical_img">
-      <img src="images/practical.png" alt="sym" width="100%" height="100%"
-      style="border-radius:15px; opacity:1.0; filter:alpha(opacity=80);">
-    </div>
-  </td>
-  <td width="67%" valign="top">
-    <p><a href="#">
-        <heading>Practical 0.385-Approximation for Submodular Maximization Subject to a Cardinality Constraint</heading>
-      </a><br>
-      
-       Murad Tukan, <b><u>Loay Mualem</b></u>, Moran Feldman
-      <br>
-    </p>
-
-    <div class="paper" id="practical">
-     <a href="https://arxiv.org/abs/2405.13994">paper</a> |
-      <a href="javascript:togglePaperDetails('practical_gap')">abstract</a> |
-      <a shape="rect" href="javascript:togglebib('practical')" class="togglebib">bibtex</a> |
-      <p align="justify"><i id="practical_gap">Non-monotone constrained submodular maximization plays a crucial role in various machine learning applications. However, existing algorithms often struggle with a trade-off between approximation guarantees and practical efficiency. The current state-of-the-art is a recent 0.401-approximation algorithm, but its computational complexity makes it highly impractical. The best practical algorithms for the problem only guarantee 1/e-approximation. In this work, we present a novel algorithm for submodular maximization subject to a cardinality constraint that combines a guarantee of 0.385-approximation with a low and practical query complexity of $O(n+k^2)$. Furthermore, we evaluate the empirical performance of our algorithm in experiments based on various machine learning applications, including Movie Recommendation, Image Summarization, and more. These experiments demonstrate the efficacy of our approach.
-      </i></p>
-<pre xml:space="preserve">
-  @article{tukan2024practical,
-  title={Practical $0.385 $-Approximation for Submodular Maximization Subject to a Cardinality Constraint},
+        <article class="card pub reveal">
+          <div class="pub-thumb-scene">
+            <div class="pub-thumb tilt"><img src="images/practical.png" alt="Practical 0.385-approximation"></div>
+          </div>
+          <div class="pub-body">
+            <h3>Practical 0.385-Approximation for Submodular Maximization Subject to a Cardinality Constraint</h3>
+            <p class="authors">Murad Tukan, <span class="me">Loay Mualem</span>, Moran Feldman</p>
+            <span class="venue">NeurIPS 2024</span>
+            <div class="pub-links">
+              <a class="chip" href="https://arxiv.org/abs/2405.13994">paper ↗</a>
+              <button class="chip" data-toggle="practical_abs" aria-expanded="false">abstract</button>
+              <button class="chip" data-toggle="practical_bib" aria-expanded="false">bibtex</button>
+            </div>
+            <div class="fold" id="practical_abs"><div><p class="abs">Non-monotone constrained submodular maximization plays a crucial role in various machine learning applications. However, existing algorithms often struggle with a trade-off between approximation guarantees and practical efficiency. The current state-of-the-art is a recent 0.401-approximation algorithm, but its computational complexity makes it highly impractical. The best practical algorithms for the problem only guarantee 1/e-approximation. In this work, we present a novel algorithm for submodular maximization subject to a cardinality constraint that combines a guarantee of 0.385-approximation with a low and practical query complexity of O(n+k²). Furthermore, we evaluate the empirical performance of our algorithm in experiments based on various machine learning applications, including Movie Recommendation, Image Summarization, and more. These experiments demonstrate the efficacy of our approach.</p></div></div>
+            <div class="fold" id="practical_bib"><div><pre>@article{tukan2024practical,
+  title={Practical $0.385$-Approximation for Submodular Maximization Subject to a Cardinality Constraint},
   author={Tukan, Murad and Mualem, Loay and Feldman, Moran},
   journal={Advances in Neural Information Processing Systems},
   volume={37},
   pages={51223--51253},
   year={2024}
-}
+}</pre></div></div>
+          </div>
+        </article>
 
-</pre>
-</div>
-</td>
-</tr>
-
-
-<tr>
-  <td width="33%" valign="top" align="center">
-    <div id="bridge_img">
-      <img src="images/bridging.png" alt="sym" width="100%" height="100%"
-      style="border-radius:15px; opacity:1.0; filter:alpha(opacity=80);">
-    </div>
-  </td>
-  <td width="67%" valign="top">
-    <p><a href="#">
-        <heading>Bridging the Gap Between General and Down-Closed Convex Sets in Submodular Maximization</heading>
-      </a><br>
-      
-      <b><u>Loay Mualem</b></u>, Murad Tukan, Moran Feldman
-      <br>
-      IJCAI 2024
-    </p>
-
-    <div class="paper" id="bridge">
-     <a href="https://arxiv.org/abs/2310.17642">paper</a> |
-      <a href="javascript:togglePaperDetails('bridge_gap')">abstract</a> |
-      <a shape="rect" href="javascript:togglebib('bridge')" class="togglebib">bibtex</a> |
-      <p align="justify"><i id="bridge_gap">Optimization of DR-submodular functions has experienced a notable surge in significance in recent times, marking a pivotal development within the domain of non-convex optimization. Motivated by real-world scenarios, some recent works have delved into the maximization of non-monotone DR-submodular functions over general (not necessarily down-closed) convex set constraints. Up to this point, these works have all used the minimum L-infinity norm of any feasible solution as a parameter. Unfortunately, a recent hardness result due to Mualem and Feldman shows that this approach cannot yield a smooth interpolation between down-closed and non-down-closed constraints. In this work, we suggest novel offline and online algorithms that provably provide such an interpolation based on a natural decomposition of the convex body constraint into two distinct convex bodies: a down-closed convex body and a general convex body. We also empirically demonstrate the superiority of our proposed algorithms across three offline and two online applications.
-      </i></p>
-<pre xml:space="preserve">
-@article{mualem2024bridging,
+        <article class="card pub reveal">
+          <div class="pub-thumb-scene">
+            <div class="pub-thumb tilt"><img src="images/bridging.png" alt="Bridging the gap"></div>
+          </div>
+          <div class="pub-body">
+            <h3>Bridging the Gap Between General and Down-Closed Convex Sets in Submodular Maximization</h3>
+            <p class="authors"><span class="me">Loay Mualem</span>, Murad Tukan, Moran Feldman</p>
+            <span class="venue">IJCAI 2024</span>
+            <div class="pub-links">
+              <a class="chip" href="https://arxiv.org/abs/2310.17642">paper ↗</a>
+              <button class="chip" data-toggle="bridge_abs" aria-expanded="false">abstract</button>
+              <button class="chip" data-toggle="bridge_bib" aria-expanded="false">bibtex</button>
+            </div>
+            <div class="fold" id="bridge_abs"><div><p class="abs">Optimization of DR-submodular functions has experienced a notable surge in significance in recent times, marking a pivotal development within the domain of non-convex optimization. Motivated by real-world scenarios, some recent works have delved into the maximization of non-monotone DR-submodular functions over general (not necessarily down-closed) convex set constraints. Up to this point, these works have all used the minimum L-infinity norm of any feasible solution as a parameter. Unfortunately, a recent hardness result due to Mualem and Feldman shows that this approach cannot yield a smooth interpolation between down-closed and non-down-closed constraints. In this work, we suggest novel offline and online algorithms that provably provide such an interpolation based on a natural decomposition of the convex body constraint into two distinct convex bodies: a down-closed convex body and a general convex body. We also empirically demonstrate the superiority of our proposed algorithms across three offline and two online applications.</p></div></div>
+            <div class="fold" id="bridge_bib"><div><pre>@article{mualem2024bridging,
   title={Bridging the Gap Between General and Down-Closed Convex Sets in Submodular Maximization},
   author={Mualem, Loay and Tukan, Murad and Fledman, Moran},
   journal={arXiv preprint arXiv:2401.09251},
   year={2024}
-}
+}</pre></div></div>
+          </div>
+        </article>
 
-</pre>
-</div>
-</td>
-</tr>
+        <article class="card pub reveal">
+          <div class="pub-thumb-scene">
+            <div class="pub-thumb tilt"><img src="images/privacy.png" alt="Privacy preserving EPM"></div>
+          </div>
+          <div class="pub-body">
+            <h3>Privacy Preserving Epigenetic PaceMaker: Stronger Privacy and Improved Efficiency</h3>
+            <p class="authors">Meir Goldenberg, <span class="me">Loay Mualem</span>, Amit Shahar, Sagi Snir, Adi Akavia</p>
+            <span class="venue">Genome Research</span>
+            <div class="pub-links">
+              <a class="chip" href="https://www.biorxiv.org/content/biorxiv/early/2024/02/20/2024.02.15.580590.full.pdf">paper ↗</a>
+              <button class="chip" data-toggle="privacy_abs" aria-expanded="false">abstract</button>
+              <button class="chip" data-toggle="privacy_bib" aria-expanded="false">bibtex</button>
+            </div>
+            <div class="fold" id="privacy_abs"><div><p class="abs">DNA methylation data plays a crucial role in estimating chronological age in mammals, offering real-time insights into an individual's aging process. The Epigenetic Pacemaker (EPM) model allows inference of the biological age as deviations from the population trend. Given the sensitivity of this data, it is essential to safeguard both inputs and outputs of the EPM model. In a recent study by Goldenberg et al., a privacy-preserving approach for EPM computation was introduced, utilizing Fully Homomorphic Encryption (FHE). However, their method had limitations, including having high communication complexity and being impractical for large datasets. Our work presents a new privacy preserving protocol for EPM computation, analytically improving both privacy and complexity. Notably, we employ a single server for the secure computation phase while ensuring privacy even in the event of server corruption (compared to requiring two non-colluding servers in Goldenberg et al). Using techniques from symbolic algebra and number theory, the new protocol eliminates the need for communication during secure computation, significantly improves asymptotic runtime and offers better compatibility to parallel computing for further time complexity reduction. We have implemented our protocol, demonstrating its ability to produce results similar to the standard (insecure) EPM model with substantial performance improvement compared to Goldenberg et al. These findings hold promise for enhancing data security in medical applications where personal privacy is paramount. The generality of both the new approach and the EPM, suggests that this protocol may be useful to other uses employing similar expectation maximization techniques.</p></div></div>
+            <div class="fold" id="privacy_bib"><div><pre>@inproceedings{goldenberg2024privacy,
+  title={Privacy Preserving Epigenetic PaceMaker: Stronger Privacy and Improved Efficiency},
+  author={Goldenberg, Meir and Mualem, Loay and Shahar, Amit and Snir, Sagi and Akavia, Adi},
+  booktitle={International Conference on Research in Computational Molecular Biology},
+  pages={412--416},
+  year={2024},
+  organization={Springer}
+}</pre></div></div>
+          </div>
+        </article>
 
-
-
-<tr>
-    <td width="33%" valign="top" align="center">
-      <div id="privacy_img">
-        <img src="images/privacy.png" alt="sym" width="100%" height="100%"
-        style="border-radius:15px; opacity:1.0; filter:alpha(opacity=80);">
-      </div>
-    </td>
-    <td width="67%" valign="top">
-      <p><a href="#">
-          <heading>Privacy Preserving Epigenetic PaceMaker: Stronger Privacy and Improved Efficiency</heading>
-        </a><br>
-        Meir Goldenberg, <b><u>Loay Mualem</b></u>, Amit Shahar, Sagi Snir, Adi Akavia
-        <br>
-        Genome Research
-      </p>
-  
-      <div class="paper" id="privacy">
-       <a href="https://www.biorxiv.org/content/biorxiv/early/2024/02/20/2024.02.15.580590.full.pdf">paper</a> |
-        <a href="javascript:togglePaperDetails('privacy_abs')">abstract</a> |
-        <a shape="rect" href="javascript:togglebib('privacy')" class="togglebib">bibtex</a> |
-        <p align="justify"><i id="privacy_abs">DNA methylation data plays a crucial role in estimating chronological age in mammals, offering real-time insights into an individual's aging process. The Epigenetic Pacemaker (EPM) model allows inference of the biological age as deviations from the population trend. Given the sensitivity of this data, it is essential to safeguard both inputs and outputs of the EPM model. In a recent study by Goldenberg et al., a privacy-preserving approach for EPM computation was introduced, utilizing Fully Homomorphic Encryption (FHE). However, their method had limitations, including having high communication complexity and being impractical for large datasets. Our work presents a new privacy preserving protocol for EPM computation, analytically improving both privacy and complexity. Notably, we employ a single server for the secure computation phase while ensuring privacy even in the event of server corruption (compared to requiring two non-colluding servers in Goldenberg et al). Using techniques from symbolic algebra and number theory, the new protocol eliminates the need for communication during secure computation, significantly improves asymptotic runtime and offers better compatibility to parallel computing for further time complexity reduction. We have implemented our protocol, demonstrating its ability to produce results similar to the standard (insecure) EPM model with substantial performance improvement compared to Goldenberg et al. These findings hold promise for enhancing data security in medical applications where personal privacy is paramount. The generality of both the new approach and the EPM, suggests that this protocol may be useful to other uses employing similar expectation maximization techniques.
-        </i></p>
-<pre xml:space="preserve">
-  @inproceedings{goldenberg2024privacy,
-    title={Privacy Preserving Epigenetic PaceMaker: Stronger Privacy and Improved Efficiency},
-    author={Goldenberg, Meir and Mualem, Loay and Shahar, Amit and Snir, Sagi and Akavia, Adi},
-    booktitle={International Conference on Research in Computational Molecular Biology},
-    pages={412--416},
-    year={2024},
-    organization={Springer}
-  }
-
-
-</pre>
-</div>
-</td>
-</tr>
-
-<tr>
-  <td width="33%" valign="top" align="center">
-    <div id="econeuro_img">
-      <img src="images/Econeuro.png" alt="sym" width="100%" height="100%"
-      style="border-radius:15px; opacity:1.0; filter:alpha(opacity=80);">
-    </div>
-  </td>
-  <td width="67%" valign="top">
-    <p><a href="#">
-        <heading>Econeurobiology and brain development in children: key factors affecting development, behavioral outcomes, and school interventions</heading>
-      </a><br>
-
-      Raed Mualem, Leon Morales-Quezada, Rania Hussein Farraj, Shir Shance, Dana Hodaya Bernshtein, Sapir Cohen, <b><u>Loay Mualem</u></b>, Niven Salem, Rivka Riki Yehuda, Yusra Zbedat, and others
-      <br>
-      Frontiers in Public Health 2024
-    </p>
-
-    <div class="paper" id="econeuro">
-      <a href="https://www.frontiersin.org/journals/public-health/articles/10.3389/fpubh.2024.1376075/full">paper</a> |
-      <a href="javascript:togglePaperDetails('econeuro_abs')">abstract</a> |
-      <a shape="rect" href="javascript:togglebib('econeuro')" class="togglebib">bibtex</a> |
-      <p align="justify"><i id="econeuro_abs">The Econeurobiology of the brain describes the environment in which an individual’s brain develops. This paper explores the complex neural mechanisms that support and evaluate enrichment at various stages of development, providing an overview of how they contribute to plasticity and enhancement of both achievement and health. It explores the deep benefits of enrichment and contrasts them with the negative effects of trauma and stress on brain development. In addition, the paper strongly emphasizes the integration of Gardner’s intelligence types into the school curriculum environment. It emphasizes the importance of linking various intelligence traits to educational strategies to ensure a holistic approach to cognitive development. In the field of Econeurobiology, this work explains the central role of the environment in shaping the development of the brain. It examines brain connections and plasticity and reveals the impact of certain environmental factors on brain development in early and mid-childhood. In particular, the six key factors highlighted are an environment of support, nutrition, physical activity, music, sleep, and cognitive strategies, highlighting their potential to improve cognitive abilities, memory, learning, self-regulation, and social and emotional development. This paper also investigates the social determinants of health and education in the context of Econeurobiology. It emphasizes the transformative power of education in society, especially in vulnerable communities facing global challenges in accessing quality education.
-      </i></p>
-<pre xml:space="preserve">
-@article{mualem2024econeurobiology,
+        <article class="card pub reveal">
+          <div class="pub-thumb-scene">
+            <div class="pub-thumb tilt"><img src="images/Econeuro.png" alt="Econeurobiology"></div>
+          </div>
+          <div class="pub-body">
+            <h3>Econeurobiology and Brain Development in Children: Key Factors Affecting Development, Behavioral Outcomes, and School Interventions</h3>
+            <p class="authors">Raed Mualem, Leon Morales-Quezada, Rania Hussein Farraj, Shir Shance, Dana Hodaya Bernshtein, Sapir Cohen, <span class="me">Loay Mualem</span>, Niven Salem, Rivka Riki Yehuda, Yusra Zbedat, and others</p>
+            <span class="venue">Frontiers in Public Health 2024</span>
+            <div class="pub-links">
+              <a class="chip" href="https://www.frontiersin.org/journals/public-health/articles/10.3389/fpubh.2024.1376075/full">paper ↗</a>
+              <button class="chip" data-toggle="econeuro_abs" aria-expanded="false">abstract</button>
+              <button class="chip" data-toggle="econeuro_bib" aria-expanded="false">bibtex</button>
+            </div>
+            <div class="fold" id="econeuro_abs"><div><p class="abs">The Econeurobiology of the brain describes the environment in which an individual's brain develops. This paper explores the complex neural mechanisms that support and evaluate enrichment at various stages of development, providing an overview of how they contribute to plasticity and enhancement of both achievement and health. It explores the deep benefits of enrichment and contrasts them with the negative effects of trauma and stress on brain development. In addition, the paper strongly emphasizes the integration of Gardner's intelligence types into the school curriculum environment. It emphasizes the importance of linking various intelligence traits to educational strategies to ensure a holistic approach to cognitive development. In the field of Econeurobiology, this work explains the central role of the environment in shaping the development of the brain. It examines brain connections and plasticity and reveals the impact of certain environmental factors on brain development in early and mid-childhood. In particular, the six key factors highlighted are an environment of support, nutrition, physical activity, music, sleep, and cognitive strategies, highlighting their potential to improve cognitive abilities, memory, learning, self-regulation, and social and emotional development. This paper also investigates the social determinants of health and education in the context of Econeurobiology. It emphasizes the transformative power of education in society, especially in vulnerable communities facing global challenges in accessing quality education.</p></div></div>
+            <div class="fold" id="econeuro_bib"><div><pre>@article{mualem2024econeurobiology,
   title={Econeurobiology and brain development in children: key factors affecting development, behavioral outcomes, and school interventions},
   author={Mualem, Raed and Morales-Quezada, Leon and Farraj, Rania Hussein and Shance, Shir and Bernshtein, Dana Hodaya and Cohen, Sapir and Mualem, Loay and Salem, Niven and Yehuda, Rivka Riki and Zbedat, Yusra and others},
   journal={Frontiers in public health},
@@ -443,273 +873,312 @@
   pages={1376075},
   year={2024},
   publisher={Frontiers Media SA}
-}
+}</pre></div></div>
+          </div>
+        </article>
 
-</pre>
-</div>
-</td>
-</tr>
+        <article class="card pub reveal">
+          <div class="pub-thumb-scene">
+            <div class="pub-thumb tilt"><img src="images/minmax.png" alt="Submodular minimax optimization"></div>
+          </div>
+          <div class="pub-body">
+            <h3>Submodular Minimax Optimization: Finding Effective Sets</h3>
+            <p class="authors"><span class="me">Loay Mualem</span>, Ethan R. Elenberg, Moran Feldman, Amin Karbasi</p>
+            <span class="venue">AISTATS 2024</span>
+            <div class="pub-links">
+              <a class="chip" href="https://proceedings.mlr.press/v238/raed-mualem24a.html">paper ↗</a>
+              <button class="chip" data-toggle="minmax_abs" aria-expanded="false">abstract</button>
+              <button class="chip" data-toggle="minmax_bib" aria-expanded="false">bibtex</button>
+            </div>
+            <div class="fold" id="minmax_abs"><div><p class="abs">Despite the rich existing literature about minimax optimization in continuous settings, only very partial results of this kind have been obtained for combinatorial settings. In this paper, we fill this gap by providing a characterization of submodular minimax optimization, the problem of finding a set (for either the min or the max player) that is effective against every possible response. We show when and under what conditions we can find such sets. We also demonstrate how minimax submodular optimization provides robust solutions for downstream machine learning applications such as (i) prompt engineering in large language models, (ii) identifying robust waiting locations for ride-sharing, (iii) kernelization of the difficulty of instances of the last setting, and (iv) finding adversarial images. Our experiments show that our proposed algorithms consistently outperform other baselines.</p></div></div>
+            <div class="fold" id="minmax_bib"><div><pre>@inproceedings{mualem2024submodular,
+  title={Submodular minimax optimization: Finding effective sets},
+  author={Mualem, Loay Raed and Elenberg, Ethan R and Feldman, Moran and Karbasi, Amin},
+  booktitle={International Conference on Artificial Intelligence and Statistics},
+  pages={1081--1089},
+  year={2024},
+  organization={PMLR}
+}</pre></div></div>
+          </div>
+        </article>
 
-<tr>
-    <td width="33%" valign="top" align="center">
-      <div id="minmax_img">
-        <img src="images/minmax.png" alt="sym" width="100%" height="100%"
-        style="border-radius:15px; opacity:1.0; filter:alpha(opacity=80);">
-      </div>
-    </td>
-    <td width="67%" valign="top">
-      <p><a href="#">
-          <heading>Submodular Minimax Optimization: Finding Effective Sets</heading>
-        </a><br>
-        <b><u>Loay Mualem</b></u>, Ethan R. Elenberg, Moran Feldman, Amin Karbasi
-        <br>
-        AISTATS 2024 
-      </p>
-  
-      <div class="paper" id="onthesize">
-       <a href="https://proceedings.mlr.press/v238/raed-mualem24a.html">paper</a> |
-        <a href="javascript:togglePaperDetails('minmax_abs')">abstract</a> |
-        <a shape="rect" href="javascript:togglebib('onthesize')" class="togglebib">bibtex</a> 
-        <p align="justify"><i id="minmax_abs">Despite the rich existing literature about minimax optimization in continuous settings, only very partial results of this kind have been obtained for combinatorial settings. In this paper, we fill this gap by providing a characterization of submodular minimax optimization, the problem of finding a set (for either the min or the max player) that is effective against every possible response. We show when and under what conditions we can find such sets. We also demonstrate how minimax submodular optimization provides robust solutions for downstream machine learning applications such as (i) prompt engineering in large language models, (ii) identifying robust waiting locations for ride-sharing, (iii) kernelization of the difficulty of instances of the last setting, and (iv) finding adversarial images. Our experiments show that our proposed algorithms consistently outperform other baselines.
-        </i></p>
-<pre xml:space="preserve">
-  @inproceedings{mualem2024submodular,
-    title={Submodular minimax optimization: Finding effective sets},
-    author={Mualem, Loay Raed and Elenberg, Ethan R and Feldman, Moran and Karbasi, Amin},
-    booktitle={International Conference on Artificial Intelligence and Statistics},
-    pages={1081--1089},
-    year={2024},
-    organization={PMLR}
-  }
+        <article class="card pub reveal">
+          <div class="pub-thumb-scene">
+            <div class="pub-thumb tilt"><img src="images/resolving.png" alt="Resolving approximability"></div>
+          </div>
+          <div class="pub-body">
+            <h3>Resolving the Approximability of Offline and Online Non-monotone DR-Submodular Maximization over General Convex Sets</h3>
+            <p class="authors"><span class="me">Loay Mualem</span>, Moran Feldman</p>
+            <span class="venue">AISTATS 2023</span>
+            <div class="pub-links">
+              <a class="chip" href="https://proceedings.mlr.press/v206/mualem23a.html">paper ↗</a>
+              <button class="chip" data-toggle="resolving_abs" aria-expanded="false">abstract</button>
+              <button class="chip" data-toggle="resolving_bib" aria-expanded="false">bibtex</button>
+            </div>
+            <div class="fold" id="resolving_abs"><div><p class="abs">In recent years, maximization of DR-submodular continuous functions became an important research field, with many real-world applications in the domains of machine learning, communication systems, operation research, and economics. Most of the works in this field study maximization subject to down-closed convex set constraints due to an inapproximability result. However, Durr et al. showed that one can bypass this inapproximability by proving approximation ratios that are functions of m, the minimum L-infinity-norm of any feasible vector. Given this observation, it is possible to get results for maximizing a DR-submodular function subject to general convex set constraints, which has led to multiple works on this problem. The most recent of which is a polynomial time 1/4(1 − m)-approximation offline algorithm due to Du. However, only a sub-exponential time (1/3√3)(1 − m)-approximation algorithm is known for the corresponding online problem. In this work, we present a polynomial time online algorithm matching the 1/4(1 − m)-approximation of the state-of-the-art offline algorithm. We also present an inapproximability result showing that our online algorithm and Du's offline algorithm are both optimal in a strong sense. Finally, we study the empirical performance of our algorithm and the algorithm of Du (which was only theoretically studied previously), and show that they consistently outperform previously suggested algorithms on revenue maximization, location summarization, and quadratic programming applications.</p></div></div>
+            <div class="fold" id="resolving_bib"><div><pre>@inproceedings{mualem2023resolving,
+  title={Resolving the approximability of offline and online non-monotone dr-submodular maximization over general convex sets},
+  author={Mualem, Loay and Feldman, Moran},
+  booktitle={International Conference on Artificial Intelligence and Statistics},
+  pages={2542--2564},
+  year={2023},
+  organization={PMLR}
+}</pre></div></div>
+          </div>
+        </article>
 
+        <article class="card pub reveal">
+          <div class="pub-thumb-scene">
+            <div class="pub-thumb tilt"><img src="images/using.png" alt="Partial monotonicity"></div>
+          </div>
+          <div class="pub-body">
+            <h3>Using Partial Monotonicity in Submodular Maximization</h3>
+            <p class="authors"><span class="me">Loay Mualem</span>, Moran Feldman</p>
+            <span class="venue">NeurIPS 2022</span>
+            <div class="pub-links">
+              <a class="chip" href="https://proceedings.neurips.cc/paper_files/paper/2022/file/1227a7a80529ecfe033065b9fcc5a042-Paper-Conference.pdf">paper ↗</a>
+              <button class="chip" data-toggle="using_abs" aria-expanded="false">abstract</button>
+              <button class="chip" data-toggle="using_bib" aria-expanded="false">bibtex</button>
+            </div>
+            <div class="fold" id="using_abs"><div><p class="abs">Over the last two decades, submodular function maximization has been the workhorse of many discrete optimization problems in machine learning applications. Traditionally, the study of submodular functions was based on binary function properties, but recent works began to consider continuous function properties such as the submodularity ratio and the curvature. The monotonicity property of set functions plays a central role in submodular maximization. Nevertheless, no continuous version of this property has been suggested to date (as far as we know), which is unfortunate since submodular functions that are almost monotone often arise in machine learning applications. In this work, we fill this gap by defining the monotonicity ratio, which is a continuous version of the monotonicity property. We then show that for many standard submodular maximization algorithms one can prove new approximation guarantees that depend on the monotonicity ratio; leading to improved approximation ratios for the common machine learning applications of movie recommendation, quadratic programming, image summarization, and ride-share optimization.</p></div></div>
+            <div class="fold" id="using_bib"><div><pre>@article{mualem2022using,
+  title={Using partial monotonicity in submodular maximization},
+  author={Mualem, Loay and Feldman, Moran},
+  journal={Advances in Neural Information Processing Systems},
+  volume={35},
+  pages={2723--2736},
+  year={2022}
+}</pre></div></div>
+          </div>
+        </article>
 
-
-
-</pre>
-</div>
-</td>
-</tr>
-
-<!-- ====================================================================  -->
-
-
-<tr>
-    <td width="33%" valign="top" align="center">
-      <div id="resolving_img">
-        <img src="images/resolving.png" alt="sym" width="100%" height="100%"
-          style="border-radius:15px; opacity:1.0; filter:alpha(opacity=80);">
-      </div>
-    </td>
-    <td width="67%" valign="top">
-      <p><a href="#">
-          <heading>Resolving the Approximability of Offline and Online Non-monotone DR-Submodular Maximization over General Convex Sets</heading>
-        </a><br>
-        <b><u>Loay Mualem</b></u>, Moran Feldman
-        <br>
-        AISTATS 2023 
-      </p>
-  
-      <div class="paper" id="resolving">
-       <a href="https://proceedings.mlr.press/v206/mualem23a.html">paper</a> |
-        <a href="javascript:togglePaperDetails('resolving_abs')">abstract</a> |
-        <a shape="rect" href="javascript:togglebib('resolving')" class="togglebib">bibtex</a> | 
-        <p align="justify"><i id="resolving_abs">In recent years, maximization of DR-submodular continuous functions became an important research field, with many real-world applications in the domains of machine learning, communication systems, operation research, and economics. Most of the works in this field study maximization subject to down-closed convex set constraints due to an inapproximability result. However, Durr et al. showed that one can bypass this inapproximability by proving approximation ratios that are functions of $m$, the minimum $\ell_\infty$-norm of any feasible vector. Given this observation, it is possible to get results for maximizing a DR-submodular function subject to general convex set constraints, which has led to multiple works on this problem. The most recent of which is a polynomial time $\tfrac{1}{4}(1 - m)$-approximation offline algorithm due to Du. However, only a sub-exponential time $\tfrac{1}{3\sqrt{3}}(1 - m)$-approximation algorithm is known for the corresponding online problem. In this work, we present a polynomial time online algorithm matching the $\tfrac{1}{4}(1 - m)$-approximation of the state-of-the-art offline algorithm. We also present an inapproximability result showing that our online algorithm and Du's offline algorithm are both optimal in a strong sense. Finally, we study the empirical performance of our algorithm and the algorithm of Du (which was only theoretically studied previously), and show that they consistently outperform previously suggested algorithms on revenue maximization, location summarization, and quadratic programming applications.
-        </i></p>
-<pre xml:space="preserve">
-  @inproceedings{mualem2023resolving,
-    title={Resolving the approximability of offline and online non-monotone dr-submodular maximization over general convex sets},
-    author={Mualem, Loay and Feldman, Moran},
-    booktitle={International Conference on Artificial Intelligence and Statistics},
-    pages={2542--2564},
-    year={2023},
-    organization={PMLR}
-  }
-
-
-
-</pre>
-</div>
-</td>
-</tr>
-
-<!-- ====================================================================  -->
-
-<tr>
-    <td width="33%" valign="top" align="center">
-      <div id="using_img">
-        <img src="images/using.png" alt="sym" width="100%" height="100%"
-          style="border-radius:15px; opacity:1.0; filter:alpha(opacity=80);">
-      </div>
-    </td>
-    <td width="67%" valign="top">
-      <p><a href="#">
-          <heading>Using Partial Monotonicity in Submodular Maximization</heading>
-        </a><br>
-        <b><u>Loay Mualem</b></u>, Moran Feldman
-        <br>
-        NeurIPS 2022 
-      </p>
-  
-      <div class="paper" id="using">
-       <a href="https://proceedings.neurips.cc/paper_files/paper/2022/file/1227a7a80529ecfe033065b9fcc5a042-Paper-Conference.pdf">paper</a> |
-        <a href="javascript:togglePaperDetails('using_abs')">abstract</a> |
-        <a shape="rect" href="javascript:togglebib('using')" class="togglebib">bibtex</a> |
-        <p align="justify"><i id="using_abs">Over the last two decades, submodular function maximization has been the workhorse of many discrete optimization problems in machine learning applications. Traditionally, the study of submodular functions was based on binary function properties, but recent works began to consider continuous function properties such as the submodularity ratio and the curvature. The monotonicity property of set functions plays a central role in submodular maximization. Nevertheless, no continuous version of this property has been suggested to date (as far as we know), which is unfortunate since submodular functions that are almost monotone often arise in machine learning applications. In this work, we fill this gap by defining the monotonicity ratio, which is a continuous version of the monotonicity property. We then show that for many standard submodular maximization algorithms one can prove new approximation guarantees that depend on the monotonicity ratio; leading to improved approximation ratios for the common machine learning applications of movie recommendation, quadratic programming, image summarization, and ride-share optimization.
-          
-        </i></p>
-<pre xml:space="preserve">
-  @article{mualem2022using,
-    title={Using partial monotonicity in submodular maximization},
-    author={Mualem, Loay and Feldman, Moran},
-    journal={Advances in Neural Information Processing Systems},
-    volume={35},
-    pages={2723--2736},
-    year={2022}
-  }
-
-
-</pre>
-</div>
-</td>
-</tr>
-
-
-<!-- ====================================================================  -->
-
- <tr>
-    <td width="33%" valign="top" align="center">
-      <div id="prune_img">
-        <img src="images/prune.png" alt="sym" width="100%" height="100%"
-          style="border-radius:15px; opacity:1.0; filter:alpha(opacity=80);">
-      </div>
-    </td>
-    <td width="67%" valign="top">
-      <p><a href="#">
-          <heading>Pruning Neural Networks via Coresets and Convex Geometry: Towards No Assumptions</heading>
-        </a><br>
-          Murad Tukan, <u><b>Loay Mualem</b></u>, Alaa Maalouf
-        <br>
-        NeurIPS 2022 
-      </p>
-  
-      <div class="paper" id="prune">
-       <a href="https://proceedings.neurips.cc/paper_files/paper/2022/hash/f7fc38fdd95fd146a471791b93ff9f12-Abstract-Conference.htmll">paper</a> |
-        <a href="javascript:togglePaperDetails('prune_abs')">abstract</a> |
-        <a shape="rect" href="javascript:togglebib('prune')" class="togglebib">bibtex</a>    
-        <p align="justify"><i id="prune_abs">Pruning is one of the predominant approaches for compressing deep neural networks (DNNs). Lately, coresets (provable data summarizations) were leveraged for pruning DNNs, adding the advantage of theoretical guarantees on the trade-off between the compression rate and the approximation error. However, coresets in this domain were either data dependant or generated under restrictive assumptions on both the model's weights and inputs. In real-world scenarios, such assumptions are rarely satisfied, limiting the applicability of coresets. To this end, we suggest a novel and robust framework for computing such coresets under mild assumptions on the model's weights and without any assumption on the training data. The idea is to compute the importance of each neuron in each layer with respect to the output of the following layer. This is achieved by an elegant combination of L\"{o}wner ellipsoid and Caratheodory theorem.Our method is simultaneously data-independent, applicable to various networks and datasets (due to the simplified assumptions), and theoretically supported. Experimental results show that our method outperforms existing coreset based neural pruning approaches across a wide range of networks and datasets. For example, our method achieved a 62% compression rate on ResNet50 on ImageNet with 1.09% drop in accuracy. 
-        </i></p>
-<pre xml:space="preserve">
-@article{tukan2022pruning,
-  title={Pruning neural networks via coresets and 
-         convex geometry: Towards no assumptions},
+        <article class="card pub reveal">
+          <div class="pub-thumb-scene">
+            <div class="pub-thumb tilt"><img src="images/prune.png" alt="Pruning neural networks"></div>
+          </div>
+          <div class="pub-body">
+            <h3>Pruning Neural Networks via Coresets and Convex Geometry: Towards No Assumptions</h3>
+            <p class="authors">Murad Tukan, <span class="me">Loay Mualem</span>, Alaa Maalouf</p>
+            <span class="venue">NeurIPS 2022</span>
+            <div class="pub-links">
+              <a class="chip" href="https://proceedings.neurips.cc/paper_files/paper/2022/hash/f7fc38fdd95fd146a471791b93ff9f12-Abstract-Conference.html">paper ↗</a>
+              <button class="chip" data-toggle="prune_abs" aria-expanded="false">abstract</button>
+              <button class="chip" data-toggle="prune_bib" aria-expanded="false">bibtex</button>
+            </div>
+            <div class="fold" id="prune_abs"><div><p class="abs">Pruning is one of the predominant approaches for compressing deep neural networks (DNNs). Lately, coresets (provable data summarizations) were leveraged for pruning DNNs, adding the advantage of theoretical guarantees on the trade-off between the compression rate and the approximation error. However, coresets in this domain were either data dependant or generated under restrictive assumptions on both the model's weights and inputs. In real-world scenarios, such assumptions are rarely satisfied, limiting the applicability of coresets. To this end, we suggest a novel and robust framework for computing such coresets under mild assumptions on the model's weights and without any assumption on the training data. The idea is to compute the importance of each neuron in each layer with respect to the output of the following layer. This is achieved by an elegant combination of Löwner ellipsoid and Caratheodory theorem. Our method is simultaneously data-independent, applicable to various networks and datasets (due to the simplified assumptions), and theoretically supported. Experimental results show that our method outperforms existing coreset based neural pruning approaches across a wide range of networks and datasets. For example, our method achieved a 62% compression rate on ResNet50 on ImageNet with 1.09% drop in accuracy.</p></div></div>
+            <div class="fold" id="prune_bib"><div><pre>@article{tukan2022pruning,
+  title={Pruning neural networks via coresets and convex geometry: Towards no assumptions},
   author={Tukan, Murad and Mualem, Loay and Maalouf, Alaa},
   journal={Advances in Neural Information Processing Systems},
   volume={35},
   pages={38003--38019},
   year={2022}
-}
+}</pre></div></div>
+          </div>
+        </article>
 
+        <article class="card pub reveal">
+          <div class="pub-thumb-scene">
+            <div class="pub-thumb tilt"><img src="images/binpacking.png" alt="Online bin packing"></div>
+          </div>
+          <div class="pub-body">
+            <h3>Online Bin Packing of Squares and Cubes</h3>
+            <p class="authors">Leah Epstein, <span class="me">Loay Mualem</span></p>
+            <span class="venue">Algorithmica</span>
+            <div class="pub-links">
+              <a class="chip" href="https://link.springer.com/article/10.1007/s00453-022-01078-9">paper ↗</a>
+              <button class="chip" data-toggle="packing_abs" aria-expanded="false">abstract</button>
+              <button class="chip" data-toggle="packing_bib" aria-expanded="false">bibtex</button>
+            </div>
+            <div class="fold" id="packing_abs"><div><p class="abs">In the d-dimensional online bin packing problem, d-dimensional cubes of positive sizes no larger than 1 are presented one by one to be assigned to positions in d-dimensional unit cube bins. In this work, we provide improved upper bounds on the asymptotic competitive ratio for square and cube bin packing problems, where our bounds do not exceed 2.0885 and 2.5735 for square and cube packing, respectively. To achieve these results, we adapt and improve a previously designed harmonic-type algorithm, and apply a different method for defining weight functions. We detect deficiencies in the state-of-the-art results by providing counter-examples to the current best algorithms and their analysis, where the claimed bounds were 2.1187 for square packing and 2.6161 for cube packing.</p></div></div>
+            <div class="fold" id="packing_bib"><div><pre>@article{epstein2023online,
+  title={Online bin packing of squares and cubes},
+  author={Epstein, Leah and Mualem, Loay},
+  journal={Algorithmica},
+  volume={85},
+  number={5},
+  pages={1415--1458},
+  year={2023},
+  publisher={Springer}
+}</pre></div></div>
+          </div>
+        </article>
 
-</pre>
-</div>
-</td>
-</tr>
-
-<!-- ====================================================================  -->
-
-   <tr>
-    <td width="33%" valign="top" align="center">
-      <div id="packing_img">
-        <img src="images/binpacking.png" alt="sym" width="80%" height="28.5%"
-          style="border-radius:15px; opacity:1.0; filter:alpha(opacity=80);">
       </div>
-    </td>
-    <td width="67%" valign="top">
-      <p><a href="#">
-          <heading>Online Bin Packing of Squares and Cubes </heading>
-        </a><br>
-        Leah Epstein, <u><b>Loay Mualem</b></u>
-        <br>
-        Algorithmica 
-      </p>
-  
-      <div class="paper" id="packing">
-       <a href="https://link.springer.com/article/10.1007/s00453-022-01078-9">paper</a> |
-        <a href="javascript:togglePaperDetails('packing_abs')">abstract</a> |
-        <a shape="rect" href="javascript:togglebib('packing')" class="togglebib">bibtex</a> |    
-        <p align="justify"><i id="packing_abs">In the d-dimensional online bin packing problem, d-dimensional cubes of positive sizes no larger than 1 are presented one by one to be assigned to positions in d-dimensional unit cube bins. In this work, we provide improved upper bounds on the asymptotic competitive ratio for square and cube bin packing problems, where our bounds do not exceed 2.0885 and 2.5735 for square and cube packing, respectively. To achieve these results, we adapt and improve a previously designed harmonic-type algorithm, and apply a different method for defining weight functions. We detect deficiencies in the state-of-the-art results by providing counter-examples to the current best algorithms and their analysis, where the claimed bounds were 2.1187 for square packing and 2.6161 for cube packing.
-        </i></p>
-<pre xml:space="preserve">
-  @article{epstein2023online,
-    title={Online bin packing of squares and cubes},
-    author={Epstein, Leah and Mualem, Loay},
-    journal={Algorithmica},
-    volume={85},
-    number={5},
-    pages={1415--1458},
-    year={2023},
-    publisher={Springer}
-  }
+    </section>
 
+    <!-- =================== Footer =================== -->
+    <footer>
+      <div class="line"></div>
+      <p>© <span id="year"></span> Loay Mualem · Original layout inspired by <a href="https://people.eecs.berkeley.edu/~pathak/">this template</a>.</p>
+    </footer>
+  </div>
 
+  <script>
+    /* ============================= Theme toggle ============================= */
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('theme'); } catch (e) {}
+      var theme = saved || 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+      document.getElementById('themeToggle').addEventListener('click', function () {
+        theme = (document.documentElement.getAttribute('data-theme') === 'dark') ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+        try { localStorage.setItem('theme', theme); } catch (e) {}
+        if (window.__updateSceneTheme) window.__updateSceneTheme();
+      });
+    })();
 
-<!-- =================== Footnote =================== -->
-<table width="100%" align="center" border="0" cellspacing="0" cellpadding="20">
-  <tr><td><br><p align="right"><font size="2">
-    A huge thanks to template from <a href="https://people.eecs.berkeley.edu/~pathak/">this</a>.
-  </font></p></td></tr>
-</table>
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-</td></tr>
+    /* ============================= Abstract / bibtex toggles ============================= */
+    document.querySelectorAll('[data-toggle]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var fold = document.getElementById(btn.getAttribute('data-toggle'));
+        var open = fold.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    });
 
+    /* ============================= Scroll reveal ============================= */
+    (function () {
+      var els = document.querySelectorAll('.reveal');
+      if (!('IntersectionObserver' in window)) {
+        els.forEach(function (el) { el.classList.add('in'); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.08 });
+      els.forEach(function (el) { io.observe(el); });
+    })();
 
-<script xml:space="preserve" language="JavaScript">
-  hideallbibs();
-</script>
-<script xml:space="preserve" language="JavaScript">
-  hideblock('privacy_abs');
-</script>
-<script xml:space="preserve" language="JavaScript">
-  hideblock('improving_dataset_abs');
-</script>
-<script xml:space="preserve" language="JavaScript">
-  hideblock('aria_abs');
-</script>
-<script xml:space="preserve" language="JavaScript">
-  hideblock('spuraudio_abs');
-</script>
-<script xml:space="preserve" language="JavaScript">
-  hideblock('orb_abs');
-</script>
-<script xml:space="preserve" language="JavaScript">
-  hideblock('econeuro_abs');
-</script>
-<script xml:space="preserve" language="JavaScript">
-  hideblock('practical_gap');
-</script>
-<script xml:space="preserve" language="JavaScript">
-  hideblock('bridge_gap');
-</script>
-<script xml:space="preserve" language="JavaScript">
-  hideblock('packing_abs');
-</script>
-<script xml:space="preserve" language="JavaScript">
-  hideblock('prune_abs');
-</script>
-<script xml:space="preserve" language="JavaScript">
-  hideblock('using_abs');
-</script>
-<script xml:space="preserve" language="JavaScript">
-  hideblock('resolving_abs');
-</script>
-<script xml:space="preserve" language="JavaScript">
-  hideblock('minmax_abs');
-</script>
-<script xml:space="preserve" language="JavaScript">
-  hideblock('privacy_abs');
-</script>
+    /* ============================= 3D tilt on cards ============================= */
+    (function () {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (window.matchMedia('(hover: none)').matches) return;
 
+      function attachTilt(el, maxDeg, lift) {
+        el.addEventListener('mousemove', function (ev) {
+          var r = el.getBoundingClientRect();
+          var x = (ev.clientX - r.left) / r.width - 0.5;
+          var y = (ev.clientY - r.top) / r.height - 0.5;
+          el.style.transform =
+            'perspective(800px) rotateY(' + (x * maxDeg) + 'deg) rotateX(' + (-y * maxDeg) + 'deg)' +
+            (lift ? ' translateZ(' + lift + 'px)' : '');
+        });
+        el.addEventListener('mouseleave', function () {
+          el.style.transform = '';
+        });
+      }
 
+      document.querySelectorAll('.tilt').forEach(function (el) { attachTilt(el, 9, 6); });
+      var portrait = document.getElementById('portrait');
+      if (portrait) attachTilt(portrait, 12, 10);
+    })();
+
+    /* ============================= Three.js background ============================= */
+    (function () {
+      if (typeof THREE === 'undefined') return;
+      var canvas = document.getElementById('bg3d');
+      var renderer;
+      try {
+        renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+      } catch (e) { canvas.style.display = 'none'; return; }
+
+      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setSize(window.innerWidth, window.innerHeight);
+
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+      camera.position.z = 16;
+
+      /* --- particle field --- */
+      var COUNT = 650;
+      var positions = new Float32Array(COUNT * 3);
+      for (var i = 0; i < COUNT; i++) {
+        positions[i * 3]     = (Math.random() - 0.5) * 46;
+        positions[i * 3 + 1] = (Math.random() - 0.5) * 30;
+        positions[i * 3 + 2] = (Math.random() - 0.5) * 26 - 4;
+      }
+      var pGeo = new THREE.BufferGeometry();
+      pGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      var pMat = new THREE.PointsMaterial({ size: 0.07, transparent: true, opacity: 0.7, depthWrite: false });
+      var points = new THREE.Points(pGeo, pMat);
+      scene.add(points);
+
+      /* --- floating wireframe solids --- */
+      var wireMat1 = new THREE.MeshBasicMaterial({ wireframe: true, transparent: true, opacity: 0.32 });
+      var wireMat2 = new THREE.MeshBasicMaterial({ wireframe: true, transparent: true, opacity: 0.22 });
+      var shapes = [];
+      function addShape(geo, mat, x, y, z, s, spin) {
+        var m = new THREE.Mesh(geo, mat);
+        m.position.set(x, y, z);
+        m.scale.setScalar(s);
+        m.userData.spin = spin;
+        m.userData.baseY = y;
+        m.userData.phase = Math.random() * Math.PI * 2;
+        scene.add(m);
+        shapes.push(m);
+      }
+      addShape(new THREE.IcosahedronGeometry(1, 0), wireMat1,  -11,  4.5, -6, 2.4, 0.0016);
+      addShape(new THREE.TorusKnotGeometry(1, 0.3, 90, 12),  wireMat2, 11, -3.5, -8, 1.6, 0.0022);
+      addShape(new THREE.OctahedronGeometry(1, 0), wireMat2,  -8, -6, -10, 2.0, 0.0019);
+      addShape(new THREE.IcosahedronGeometry(1, 1), wireMat2,  9,  6, -12, 2.8, 0.0012);
+      addShape(new THREE.DodecahedronGeometry(1, 0), wireMat1, 0, -9, -14, 2.2, 0.0014);
+
+      /* --- theme colors --- */
+      function applyThemeColors() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        pMat.color.set(dark ? 0x7c94ff : 0x4f6df5);
+        pMat.opacity = dark ? 0.75 : 0.5;
+        wireMat1.color.set(dark ? 0x34d8e8 : 0x00b3c6);
+        wireMat1.opacity = dark ? 0.30 : 0.18;
+        wireMat2.color.set(dark ? 0x7c94ff : 0x4f6df5);
+        wireMat2.opacity = dark ? 0.20 : 0.13;
+      }
+      applyThemeColors();
+      window.__updateSceneTheme = applyThemeColors;
+
+      /* --- interaction --- */
+      var mouseX = 0, mouseY = 0, scrollY = 0;
+      document.addEventListener('mousemove', function (e) {
+        mouseX = (e.clientX / window.innerWidth - 0.5);
+        mouseY = (e.clientY / window.innerHeight - 0.5);
+      }, { passive: true });
+      window.addEventListener('scroll', function () { scrollY = window.scrollY || 0; }, { passive: true });
+
+      window.addEventListener('resize', function () {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      var t = 0;
+      function render() {
+        t += 0.5;
+        points.rotation.y += 0.00045;
+        points.rotation.x = -scrollY * 0.00008;
+        shapes.forEach(function (m) {
+          m.rotation.x += m.userData.spin;
+          m.rotation.y += m.userData.spin * 1.35;
+          m.position.y = m.userData.baseY + Math.sin(t * 0.012 + m.userData.phase) * 0.6;
+        });
+        camera.position.x += (mouseX * 2.2 - camera.position.x) * 0.04;
+        camera.position.y += (-mouseY * 1.6 + scrollY * -0.0012 - camera.position.y) * 0.04;
+        camera.lookAt(0, 0, -4);
+        renderer.render(scene, camera);
+      }
+
+      if (reduced) {
+        render();  /* single static frame */
+      } else {
+        renderer.setAnimationLoop(render);
+      }
+    })();
+  </script>
 </body>
-
 </html>
