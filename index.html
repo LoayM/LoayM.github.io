@@ -722,6 +722,25 @@
         <article class="card pub reveal">
           <div class="pub-thumb-scene">
             <div class="pub-thumb tilt">
+              <object data="images/symdrift_method.pdf" type="application/pdf">
+                <div class="placeholder">SymDrift</div>
+              </object>
+            </div>
+          </div>
+          <div class="pub-body">
+            <h3>SymDrift: One-Shot Generative Modeling under Symmetries</h3>
+            <p class="authors">Samir Darouich, Vinh Tong, Lluís Pastor-Pérez, Tanja Bien, <span class="me">Loay Mualem</span>, Mathias Niepert</p>
+            <div class="pub-links">
+              <a class="chip" href="https://arxiv.org/abs/2605.06140">paper ↗</a>
+              <button class="chip" data-toggle="symdrift_abs" aria-expanded="false">abstract</button>
+            </div>
+            <div class="fold" id="symdrift_abs"><div><p class="abs">Generative modeling of physical systems, such as molecules, requires learning distributions that are invariant under global symmetries, such as rotations in three-dimensional space. Equivariant diffusion and flow matching models can incorporate such invariances effectively, even when trained on a non-invariant empirical distribution, but they typically rely on costly multi-step sampling. Recently, drifting models have emerged as an efficient alternative, enabling single-step generation and achieving state-of-the-art performance in generative modeling tasks. However, we show that drifting models face a symmetry-specific challenge, since an equivariant generator does not generally produce the same drifting field as the one obtained from the symmetrized target distribution. Addressing this issue would require expensive symmetrization of the empirical distribution. To avoid this cost, we propose SymDrift, a framework that makes the drifting field itself symmetry-aware. We introduce two complementary strategies: (i) a symmetrized drift in coordinate space based on optimal alignment, and (ii) a G-invariant embedding that removes symmetry ambiguity by construction. Empirically, SymDrift outperforms existing one-shot methods on standard benchmarks for conformer and transition state generation, while remaining competitive with significantly more expensive multi-step approaches. By enabling one-shot inference, SymDrift reduces computational overhead by up to 40× compared to existing baselines, making it promising for high-throughput applications such as virtual drug screening and large-scale reaction network exploration.</p></div></div>
+          </div>
+        </article>
+
+        <article class="card pub reveal">
+          <div class="pub-thumb-scene">
+            <div class="pub-thumb tilt">
               <object data="images/ARIA2.pdf" type="application/pdf">
                 <div class="placeholder">ARIA</div>
               </object>
